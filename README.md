@@ -1,0 +1,3 @@
+# 热点资讯智能体
+
+本项目只在用使用langchain以及langgraph框架，通过httpx爬取当日科技热点资讯，总结为markdown文档格式
