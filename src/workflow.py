@@ -32,4 +32,4 @@ builder.add_edge("analyze",END)
 graph = builder.compile()
 
 result = graph.invoke({"user_input":"ai"})
-print(result[])
+print(result.content)
