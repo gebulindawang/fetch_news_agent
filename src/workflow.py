@@ -1,8 +1,10 @@
+import re
+
+from langchain.messages import HumanMessage, SystemMessage
 from langgraph.graph import END, START, StateGraph
-from langchain.messages import SystemMessage,AIMessage,HumanMessage
 
 from model import llm
-from news_state import NewsState,AnalyzeResult,ArticleSchema
+from news_state import AnalyzeResult, ArticleSchema, NewsState
 from tools.fetch_news import search_news
 
 SYS_PROMPT = "" \
@@ -23,14 +25,23 @@ def analyze_node(state:NewsState):
     ])
     return  {"analyze" : result}
 
+def write_node(state:NewsState):
+    """写入节点"""
+    result = state["analyze"]
+    for article in result.analyze:
+        print(f"文章展示:{article}\n")
+        
+    return {}
+
 builder  = StateGraph(NewsState)
 builder.add_node("search",search_node)
 builder.add_node("analyze",analyze_node)
+builder.add_node("write",write_node)
 builder.add_edge(START,"search")
 builder.add_edge("search","analyze")
-builder.add_edge("analyze",END)
+builder.add_edge("analyze","write")
+builder.add_edge("write",END)
 
 graph = builder.compile()
 
 result = graph.invoke({"user_input":"ai"})
-print(result["analyze"])

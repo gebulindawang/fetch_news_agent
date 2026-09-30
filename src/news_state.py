@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from datetime import datetime
 
 class NewsState (TypedDict):
-    id : int 
+    id : int
     articles:list
     start_time:datetime
     end_time:datetime
@@ -18,5 +18,3 @@ class ArticleSchema(BaseModel):
 
 class AnalyzeResult(BaseModel):
     analyze:Annotated[list[ArticleSchema], "分析结果"]
-    
-
